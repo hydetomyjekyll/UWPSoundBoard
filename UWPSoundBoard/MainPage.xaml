@@ -1,0 +1,111 @@
+﻿<Page
+    x:Class="UWPSoundBoard.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:UWPSoundBoard"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:data ="using:UWPSoundBoard.Model"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <NavigationView x:Name="NavView"
+                    ItemInvoked="NavView_ItemInvoked"
+                    Loaded="NavView_Loaded"
+                    IsSettingsVisible="False"
+                    BackRequested = "NavView_BackRequested">
+
+        <NavigationView.MenuItems>
+
+            <NavigationViewItem x:Uid="HomeNavItem" Content="Home" Tag="home">
+                <NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xE10F;"/>
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
+            
+            <NavigationViewItemSeparator/>
+            
+
+            <NavigationViewItem x:Uid="AnimalsNavItem"  Content="Animals" Tag="animals">
+                <NavigationViewItem.Icon>
+                    <BitmapIcon UriSource="Assets/Icons/animals.png"/>
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
+
+
+
+            <NavigationViewItem x:Uid="CartoonNavItem" Content="Cartoon" Tag="cartoon">
+                <NavigationViewItem.Icon>
+                    <BitmapIcon UriSource="Assets/Icons/cartoon.png" />
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
+
+            <NavigationViewItem x:Uid="TauntNavItem" Content="Taunts" Tag="taunt">
+                <NavigationViewItem.Icon>
+                    <BitmapIcon UriSource="Assets/Icons/taunt.png"  />
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
+
+            <NavigationViewItem x:Uid="WarningNavItem" Content="Warning" Tag="warning">
+                <NavigationViewItem.Icon>
+                    <BitmapIcon UriSource="Assets/Icons/warning.png" MinWidth="100" MinHeight="100"/>
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
+
+
+        </NavigationView.MenuItems>
+
+
+
+        <NavigationView.HeaderTemplate>
+            <DataTemplate>
+                <Grid Margin="24,0,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource TitleTextBlockStyle}"
+                           FontSize="28"
+                           VerticalAlignment="Center"
+                           Text="{Binding}"/>
+
+                    <AutoSuggestBox Name="MyAutoSuggestBox"  
+                        Margin="20,0,20,0" 
+                        Grid.Column="1"
+                        HorizontalAlignment="Center"  
+                        VerticalAlignment="Center"
+                        QueryIcon="Find" 
+                        PlaceholderText="Find Something"
+                        Width="300"  
+                        TextChanged="MyAutoSuggestBox_TextChanged"  />
+                    
+                </Grid>
+            </DataTemplate>
+        </NavigationView.HeaderTemplate>
+
+
+
+
+
+        <Grid>
+            <MediaElement Name="MyMediaElement" AutoPlay="True"/>
+            
+            <GridView
+                Name="SoundGridView"
+                SelectionMode="None"
+                IsItemClickEnabled="True"
+                ItemClick="SoundGridView_ItemClick"
+                
+                ItemsSource="{x:Bind mSounds}">
+
+                <GridView.ItemTemplate>
+                    <DataTemplate x:DataType="data:Sound">
+                        <Image Name="MyImage" Height="168" Width="151" Source="{x:Bind ImageFile}"/>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+                
+            </GridView>
+        </Grid>
+
+    </NavigationView>
+</Page>
