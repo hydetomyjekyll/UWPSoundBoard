@@ -9,6 +9,11 @@ namespace UWPSoundBoard.Model
 {
     public class SoundManager
     {
+
+        /// <summary>
+        /// This method returns all the sounds available in the list
+        /// </summary>
+        /// <param name="sounds">The passed observable collection which is updated with the desired value</param>
         public static void GetAllSounds(ObservableCollection<Sound> sounds)
         {
             var allSounds = GetSounds();
@@ -17,6 +22,12 @@ namespace UWPSoundBoard.Model
         }
 
 
+
+        /// <summary>
+        /// This method returns the sound which is filtered by category passed as parameter
+        /// </summary>
+        /// <param name="sounds">The passed observable collection which is updated with the desired value</param>
+        /// <param name="soundCategory">The category which we want to filter</param>
         public static void GetSoundsByCategory(ObservableCollection<Sound> sounds, SoundCategory soundCategory)
         {
             var allSounds = GetSounds();
@@ -26,6 +37,12 @@ namespace UWPSoundBoard.Model
         }
 
 
+
+
+        /// <summary>
+        /// Method that returns all the available elements in the assets
+        /// </summary>
+        /// <returns></returns>
         private static List<Sound> GetSounds()
         {
             var sounds = new List<Sound>();

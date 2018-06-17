@@ -22,9 +22,9 @@
                     <FontIcon Glyph="&#xE10F;"/>
                 </NavigationViewItem.Icon>
             </NavigationViewItem>
-            
+
             <NavigationViewItemSeparator/>
-            
+
 
             <NavigationViewItem x:Uid="AnimalsNavItem"  Content="Animals" Tag="animals">
                 <NavigationViewItem.Icon>
@@ -58,29 +58,36 @@
 
 
         <NavigationView.HeaderTemplate>
+            
             <DataTemplate>
+                
                 <Grid Margin="24,0,0,0">
+                    
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="3*" MinWidth="180"/>
                     </Grid.ColumnDefinitions>
+                    
                     <TextBlock Style="{StaticResource TitleTextBlockStyle}"
                            FontSize="28"
                            VerticalAlignment="Center"
-                           Text="{Binding}"/>
+                           Text="{Binding}"
+                           Name="HeadingTextBlock"/>
 
-                    <AutoSuggestBox Name="MyAutoSuggestBox"  
-                        Margin="20,0,20,0" 
+                    <AutoSuggestBox x:Name="MyAutoSuggestBox"  
+                        Margin="20,0,10,0" 
                         Grid.Column="1"
-                        HorizontalAlignment="Center"  
+                        HorizontalAlignment="Stretch"  
                         VerticalAlignment="Center"
                         QueryIcon="Find" 
                         PlaceholderText="Find Something"
-                        Width="300"  
-                        TextChanged="MyAutoSuggestBox_TextChanged"  />
-                    
+                        TextChanged="MyAutoSuggestBox_TextChanged" 
+                        MaxWidth="300"/>
+
                 </Grid>
+                
             </DataTemplate>
+            
         </NavigationView.HeaderTemplate>
 
 
@@ -88,22 +95,22 @@
 
 
         <Grid>
-            <MediaElement Name="MyMediaElement" AutoPlay="True"/>
-            
+            <MediaElement x:Name="MyMediaElement" AutoPlay="True"/>
+
             <GridView
-                Name="SoundGridView"
+                x:Name="SoundGridView"
                 SelectionMode="None"
                 IsItemClickEnabled="True"
                 ItemClick="SoundGridView_ItemClick"
                 
-                ItemsSource="{x:Bind mSounds}">
+                ItemsSource="{x:Bind Path=mSounds}">
 
                 <GridView.ItemTemplate>
                     <DataTemplate x:DataType="data:Sound">
-                        <Image Name="MyImage" Height="168" Width="151" Source="{x:Bind ImageFile}"/>
+                        <Image x:Name="MyImage" Height="168" Width="151" Source="{x:Bind Path=ImageFile}"/>
                     </DataTemplate>
                 </GridView.ItemTemplate>
-                
+
             </GridView>
         </Grid>
 

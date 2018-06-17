@@ -14,6 +14,11 @@ namespace UWPSoundBoard.Model
         public string ImageFile { get; set; }
 
 
+
+        /// <summary>
+        /// Given the name and the category we can generate all the properties
+        /// This is because the file location follow a general pattern 
+        /// </summary>
         public Sound(string name, SoundCategory category)
         {
             Name = name;
@@ -23,7 +28,9 @@ namespace UWPSoundBoard.Model
         }
     }
 
-
+    /// <summary>
+    /// Created a public enum to store all the SoundCategory possible
+    /// </summary>
     public enum SoundCategory
     {
         Animals,
