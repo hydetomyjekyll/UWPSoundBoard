@@ -10,10 +10,14 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <NavigationView x:Name="NavView"
-                    ItemInvoked="NavView_ItemInvoked"
-                    Loaded="NavView_Loaded"
+                    
                     IsSettingsVisible="False"
+                    
+                    Loaded="NavView_Loaded"
+                    ItemInvoked="NavView_ItemInvoked"
+                    
                     BackRequested = "NavView_BackRequested">
+        
 
         <NavigationView.MenuItems>
 
@@ -69,25 +73,26 @@
                     </Grid.ColumnDefinitions>
                     
                     <TextBlock Style="{StaticResource TitleTextBlockStyle}"
-                           FontSize="28"
-                           VerticalAlignment="Center"
                            Text="{Binding}"
-                           Name="HeadingTextBlock"/>
+                               
+                           FontSize="28"
+                           VerticalAlignment="Center" />                    
+                    
 
-                    <AutoSuggestBox x:Name="MyAutoSuggestBox"  
-                        Margin="20,0,10,0" 
-                        Grid.Column="1"
-                        HorizontalAlignment="Stretch"  
-                        VerticalAlignment="Center"
-                        QueryIcon="Find" 
-                        PlaceholderText="Find Something"
-                        TextChanged="MyAutoSuggestBox_TextChanged" 
-                        MaxWidth="300"/>
+                    <AutoSuggestBox x:Name="MyAutoSuggestBox"
+                                    PlaceholderText="Find Something"
+                                    QueryIcon="Find" 
+                                    
+                                    Grid.Column="1"
+                                    Margin="20,0,10,0" 
+                                    HorizontalAlignment="Stretch" 
+                                    MaxWidth="300"
+                                    VerticalAlignment="Center"                     
+                       
+                                    TextChanged="MyAutoSuggestBox_TextChanged" />
 
-                </Grid>
-                
-            </DataTemplate>
-            
+                </Grid>                
+            </DataTemplate>            
         </NavigationView.HeaderTemplate>
 
 
@@ -99,11 +104,15 @@
 
             <GridView
                 x:Name="SoundGridView"
+                
                 SelectionMode="None"
                 IsItemClickEnabled="True"
-                ItemClick="SoundGridView_ItemClick"
+                ItemClick="SoundGridView_ItemClick"                
+                ItemsSource="{x:Bind Path=mSounds}"
                 
-                ItemsSource="{x:Bind Path=mSounds}">
+                AllowDrop="True"
+                Drop="SoundGridView_Drop"
+                DragOver="SoundGridView_DragOver">
 
                 <GridView.ItemTemplate>
                     <DataTemplate x:DataType="data:Sound">

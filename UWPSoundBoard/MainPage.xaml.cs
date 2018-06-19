@@ -5,8 +5,10 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UWPSoundBoard.Model;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -58,7 +60,11 @@ namespace UWPSoundBoard
         /// <param name="e"></param>
         private void SoundGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
+            var selectedSound = (Sound)e.ClickedItem;
 
+            //The media element needs a URI which in this case is the base URI of the 
+            //Application + the path to particular file defined in Sound object
+            MyMediaElement.Source = new Uri(this.BaseUri, selectedSound.AudioFile);
         }
     
 
@@ -74,6 +80,54 @@ namespace UWPSoundBoard
         {
             NavView.Header = header;
         }
+
+
+
+
+
+        private void SoundGridView_DragOver(object sender, DragEventArgs e)
+        {
+            e.AcceptedOperation = DataPackageOperation.Copy;
+
+
+            e.DragUIOverride.Caption = "drop to create a custom sound and tile";
+            e.DragUIOverride.IsCaptionVisible = true;
+            e.DragUIOverride.IsContentVisible = true;
+            e.DragUIOverride.IsGlyphVisible = true;
+        }
+
+
+        private async void SoundGridView_Drop(object sender, DragEventArgs e)
+        {
+            if (e.DataView.Contains(StandardDataFormats.StorageItems))
+            {
+                var items = await e.DataView.GetStorageItemsAsync();
+
+                if (items.Any())
+                {
+                    var storageFile = items[0] as StorageFile;
+                    var contentType = storageFile.ContentType;
+
+                    StorageFolder folder = ApplicationData.Current.LocalFolder;
+
+
+                    if (contentType == "audio/wav" || contentType == "audio/mpeg")
+                    {
+                        StorageFile newFile = await storageFile.CopyAsync(folder, storageFile.Name, NameCollisionOption.GenerateUniqueName);
+
+                        MyMediaElement.SetSource(await storageFile.OpenAsync(FileAccessMode.Read), contentType);
+                        MyMediaElement.Play();
+                    }
+                }
+            }
+        }
+
+
+
+
+
+
+
 
 
         private void NavView_Loaded(object sender, RoutedEventArgs e)
@@ -164,15 +218,6 @@ namespace UWPSoundBoard
             NavView.IsBackEnabled = false;
 
         }
-
-
-
-
-
-
-
-      
-
 
        
     }
