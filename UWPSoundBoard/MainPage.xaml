@@ -89,7 +89,8 @@
                                     MaxWidth="300"
                                     VerticalAlignment="Center"                     
                        
-                                    TextChanged="MyAutoSuggestBox_TextChanged" />
+                                    TextChanged="MyAutoSuggestBox_TextChanged"
+                                    QuerySubmitted="MyAutoSuggestBox_QuerySubmitted"/>
 
                 </Grid>                
             </DataTemplate>            
@@ -116,7 +117,10 @@
 
                 <GridView.ItemTemplate>
                     <DataTemplate x:DataType="data:Sound">
-                        <Image x:Name="MyImage" Height="168" Width="151" Source="{x:Bind Path=ImageFile}"/>
+                        <Image x:Name="MyImage" 
+                               Height="168" Width="151" 
+                               Source="{x:Bind Path=ImageFile}"
+                               Margin="5,5,5,5"/>
                     </DataTemplate>
                 </GridView.ItemTemplate>
 

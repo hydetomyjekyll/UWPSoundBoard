@@ -28,7 +28,12 @@ namespace UWPSoundBoard
 
         //Create a Observable Collection to store all out Sound Object
         private ObservableCollection<Sound> mSounds;
-      
+
+        private ObservableCollection<Sound> searchQuerySounds;
+
+        //Create a List to manage the search option
+        private List<String> suggestions;
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -36,6 +41,8 @@ namespace UWPSoundBoard
             //Initialize the mSounds to all the available sounds
             mSounds = new ObservableCollection<Sound>();
             SoundManager.GetAllSounds(mSounds);
+
+            searchQuerySounds = new ObservableCollection<Sound>();
 
             //Set the title for the page
             SetHeader("All Sounds");
@@ -45,12 +52,60 @@ namespace UWPSoundBoard
 
 
 
-
         private void MyAutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
-            SetHeader("Search");
+            searchQuerySounds.Clear();
+
+            switch (GetHeader())
+            {
+                case "All Sounds":
+                    SoundManager.GetAllSounds(searchQuerySounds);
+                    break;
+
+                case "Animal Sounds":
+                    SoundManager.GetSoundsByCategory(searchQuerySounds, SoundCategory.Animals);
+                    break;
+
+                case "Cartoon Sounds":
+                    SoundManager.GetSoundsByCategory(searchQuerySounds, SoundCategory.Cartoons);
+                    break;
+
+                case "Taunt Sounds":
+                    SoundManager.GetSoundsByCategory(searchQuerySounds, SoundCategory.Taunts);
+                    break;
+
+                case "Warning Sounds":
+                    SoundManager.GetSoundsByCategory(searchQuerySounds, SoundCategory.Warnings);
+                    break;
+            }
+
+            suggestions = searchQuerySounds
+                .Where(p => (p.Name.ToLower()).StartsWith(sender.Text.ToLower()))
+                .Select(p => p.Name)
+                .ToList();
+
+            sender.ItemsSource = suggestions;
+
+            SoundManager.GetSoundsByName(mSounds, GetHeader(), sender.Text);
+
+            if (sender.Text != "")
+            {
+                NavView.IsBackEnabled = true;
+            }
+
+            if (sender.Text == "" && GetHeader() == "All Sounds")
+            {
+                NavView.IsBackEnabled = false;
+            }
         }
 
+
+
+
+        private void MyAutoSuggestBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            //SoundManager.GetSoundsByName(mSounds, GetHeader(), sender.Text);
+        }
 
 
         /// <summary>
@@ -68,7 +123,7 @@ namespace UWPSoundBoard
         }
     
 
-        //From here we are making method calls for our NavigationView
+       
 
 
 
@@ -81,7 +136,10 @@ namespace UWPSoundBoard
             NavView.Header = header;
         }
 
-
+        public string GetHeader()
+        {
+            return NavView.Header.ToString();
+        }
 
 
 
@@ -216,7 +274,7 @@ namespace UWPSoundBoard
             SoundManager.GetAllSounds(mSounds);
 
             NavView.IsBackEnabled = false;
-
+            
         }
 
        

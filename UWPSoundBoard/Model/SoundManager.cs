@@ -38,6 +38,43 @@ namespace UWPSoundBoard.Model
 
 
 
+        public static void GetSoundsByName(ObservableCollection<Sound> sounds, String header, String beginningStr)
+        {
+            var allSounds = GetSounds();
+
+            switch (header)
+            {
+                case "All Sounds":
+                    break;
+
+                case "Animal Sounds":
+                    allSounds = allSounds.Where(p => p.Category == SoundCategory.Animals).ToList();
+                    break;
+
+                case "Cartoon Sounds":
+                    allSounds = allSounds.Where(p => p.Category == SoundCategory.Cartoons).ToList();
+                    break;
+
+                case "Taunt Sounds":
+                    allSounds = allSounds.Where(p => p.Category == SoundCategory.Taunts).ToList();
+                    break;
+
+                case "Warning Sounds":
+                    allSounds = allSounds.Where(p => p.Category == SoundCategory.Warnings).ToList();
+                    break;
+            }
+
+            var filteredSounds = allSounds.Where(p => p.Name.ToLower().StartsWith(beginningStr.ToLower())).ToList();
+
+            if(filteredSounds.Count() != sounds.Count())
+            {
+                sounds.Clear();
+                filteredSounds.ForEach(p => sounds.Add(p));
+            }
+            
+            
+        }
+
 
         /// <summary>
         /// Method that returns all the available elements in the assets
